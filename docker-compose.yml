@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  supermercado-service:
+    image: guilhermejr/sistema-supermercado-service
+    container_name: supermercado-service
+    restart: always
+    ports:
+      - "9005:9005"
+
+networks:
+  default:
+    external:
+      name: rede
