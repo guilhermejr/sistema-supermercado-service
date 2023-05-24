@@ -46,6 +46,12 @@ public class CompraService {
         // --- Busca dados no site da secretaria da fazenda da bahia ---
         NFEResponse nfeResponse = nfebaClient.buscar(busca);
 
+        // --- Verifica se o retorno é válido ---
+        if (!nfeResponse.getRetornou()) {
+            log.error("{}", nfeResponse.getMensagem());
+            throw new ExceptionDefault(nfeResponse.getMensagem());
+        }
+
         // --- Verifica se já foi inserida ---
         if (compraRepository.findByChaveDeAcesso(nfeResponse.getChaveDeAcesso()).isPresent()) {
             log.error("Compra já realizada {}", nfeResponse.getChaveDeAcesso());

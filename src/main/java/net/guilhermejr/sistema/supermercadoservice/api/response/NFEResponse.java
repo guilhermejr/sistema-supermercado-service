@@ -17,6 +17,12 @@ public class NFEResponse {
     @Schema(description = "URL da nota fiscal", example = "http://nfe.sefaz.ba.gov.br/servicos/nfce/qrcode.aspx?p=29220602212937002876650020000992621133185957|2|1|1|D6587D81BCBA198CAEC98C9AC667E88094D93170")
     private String url;
 
+    @Schema(description = "Informa se o retorno é válido ou não", example = "true")
+    private Boolean retornou;
+
+    @Schema(description = "Mensagem de caso não tenha conseguido retorno válido", example = "[QRCode v2.00]: Não foi possível obter informações sobre a NFC-e.")
+    private String mensagem;
+
     @Schema(description = "Data da compra", example = "18/06/2022 14:21:53")
     private String data;
 
