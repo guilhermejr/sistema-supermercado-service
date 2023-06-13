@@ -6,8 +6,8 @@ import lombok.*;
 import net.guilhermejr.sistema.supermercadoservice.domain.entity.Compra;
 import net.guilhermejr.sistema.supermercadoservice.domain.entity.Produto;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.UUID;
 

@@ -41,8 +41,8 @@ public class ActuatorAndSwaggerSecurityConfig {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/actuator/**").hasRole("ACTUATOR")
-                .antMatchers("/swagger-ui/**", "/v3/**").hasRole("SWAGGER")
+                .requestMatchers("/actuator/**").hasRole("ACTUATOR")
+                .requestMatchers("/swagger-ui/**", "/v3/**").hasRole("SWAGGER")
                 .and()
                 .csrf().disable()
                 .formLogin();

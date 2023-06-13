@@ -3,9 +3,8 @@ package net.guilhermejr.sistema.supermercadoservice.domain.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.envers.Audited;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,7 +18,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "compras")
-@Audited
 public class Compra implements Serializable {
 
     private static final long serialVersionUID = 1L;
