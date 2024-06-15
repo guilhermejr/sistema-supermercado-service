@@ -66,17 +66,4 @@ public class CompraController {
 
     }
 
-    // --- Inserir ------------------------------------------------------------
-    @Operation(summary = "Insere uma compra", responses = {
-            @ApiResponse(responseCode = "201", description = "OK",content = @Content(mediaType = "application/json", schema = @Schema(implementation = NFEResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorRequestDTO.class)))
-    })
-    @PostMapping
-    public ResponseEntity<NFEResponse> inserir(@Valid @RequestBody URLRequest urlRequest) {
-
-        log.info("Inserindo compra: {}", urlRequest.getUrl());
-        NFEResponse nfeResponse = compraService.inserir(urlRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nfeResponse);
-
-    }
 }

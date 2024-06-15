@@ -35,10 +35,9 @@ public class CompraService {
     private final ItemRepository itemRepository;
     private final ConverteStringUtil converteStringUtil;
     private final CompraMapper compraMapper;
-    private final AuthenticationCurrentUserService authenticationCurrentUserService;
 
     // --- Inserir ------------------------------------------------------------
-    public NFEResponse inserir(URLRequest urlRequest) {
+    public NFEResponse inserir(URLRequest urlRequest, UUID usuario) {
 
         // --- Quebra url ---
         String busca = urlRequest.getUrl().split("=")[1];
@@ -71,8 +70,6 @@ public class CompraService {
             supermercadoRepository.save(supermercado);
             log.info("Supermercado cadastrado {}", nfeResponse.getNome());
         }
-
-        UUID usuario = authenticationCurrentUserService.getCurrentUser().getId();
 
         // --- Compra ---
         Compra compra = Compra.builder()
