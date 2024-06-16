@@ -24,11 +24,11 @@ public class NFEController {
     private final NFEService NFEService;
 
     @PostMapping
-    public ResponseEntity<Void> inserir(@Valid @RequestBody URLRequest urlRequest) {
+    public ResponseEntity<String> inserir(@Valid @RequestBody URLRequest urlRequest) {
 
         log.info("Inserindo NFE: {}", urlRequest.getUrl());
         NFEService.inserir(urlRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body("NFE inserida com sucesso");
 
     }
 
