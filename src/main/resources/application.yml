@@ -1,8 +1,6 @@
 spring:
   application:
     name: supermercado-service
-  profiles:
-    active: prod
   config:
     import: 'vault://, configserver:http://config-server:8888'
   cloud:
@@ -29,11 +27,6 @@ spring:
             user:
               name: ${actuatorUser}
               password: ${actuatorPass}
-
-logging:
-  file:
-    name: log.log
-    path: .
 
 info:
   app:

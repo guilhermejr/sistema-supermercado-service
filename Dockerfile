@@ -10,5 +10,5 @@ ENV VAULT_TOKEN=${VAULT_TOKEN}
 ENV CONFIG_SERVER_USER=${CONFIG_SERVER_USER}
 ENV CONFIG_SERVER_PASS=${CONFIG_SERVER_PASS}
 COPY sistema-supermercado-service.jar sistema-supermercado-service.jar
-ENTRYPOINT ["java","-jar","/sistema-supermercado-service.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","/sistema-supermercado-service.jar"]
 EXPOSE 9005
