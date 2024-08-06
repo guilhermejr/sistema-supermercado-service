@@ -3,6 +3,7 @@ package net.guilhermejr.sistema.supermercadoservice.config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.guilhermejr.sistema.supermercadoservice.api.request.URLRequest;
+import net.guilhermejr.sistema.supermercadoservice.api.response.NFEResponse;
 import net.guilhermejr.sistema.supermercadoservice.domain.entity.NFE;
 import net.guilhermejr.sistema.supermercadoservice.domain.repository.NFERepository;
 import net.guilhermejr.sistema.supermercadoservice.service.CompraService;
@@ -39,7 +40,7 @@ public class TarefasAgendadasConfig {
 
                 try {
 
-                    compraService.inserir(urlRequest, nfe.getUsuario());
+                    NFEResponse nfeResponse = compraService.inserir(urlRequest, nfe.getUsuario());
 
                     log.info("Removido NFE pois foi processada: {}", urlRequest.getUrl());
                     nfeRepository.delete(nfe);
