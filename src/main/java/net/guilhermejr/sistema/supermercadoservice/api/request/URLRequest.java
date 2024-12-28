@@ -1,7 +1,5 @@
 package net.guilhermejr.sistema.supermercadoservice.api.request;
 
-
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import jakarta.validation.constraints.NotBlank;
@@ -12,11 +10,9 @@ import jakarta.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Schema(description = "Request para inserir compra")
 public class URLRequest {
 
     @NotBlank
-    @Schema(description = "url", example = "URL da compra")
     private String url;
 
 }

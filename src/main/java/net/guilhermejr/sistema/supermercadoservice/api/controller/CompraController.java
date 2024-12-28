@@ -1,19 +1,11 @@
 package net.guilhermejr.sistema.supermercadoservice.api.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.guilhermejr.sistema.supermercadoservice.api.request.URLRequest;
 import net.guilhermejr.sistema.supermercadoservice.api.response.CompraListagemResponse;
 import net.guilhermejr.sistema.supermercadoservice.api.response.CompraResponse;
-import net.guilhermejr.sistema.supermercadoservice.api.response.NFEResponse;
 import net.guilhermejr.sistema.supermercadoservice.api.response.SupermercadoListagemResponse;
 import net.guilhermejr.sistema.supermercadoservice.exception.dto.ErrorDefaultDTO;
-import net.guilhermejr.sistema.supermercadoservice.exception.dto.ErrorRequestDTO;
 import net.guilhermejr.sistema.supermercadoservice.service.CompraService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,10 +30,6 @@ public class CompraController {
     private final CompraService compraService;
 
     // --- Retornar -----------------------------------------------------------
-    @Operation(summary = "Retorna compras", responses = {
-            @ApiResponse(responseCode = "200", description = "OK",content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SupermercadoListagemResponse.class)))),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDefaultDTO.class)))
-    })
     @GetMapping
     public ResponseEntity<Page<CompraListagemResponse>> retornar(@PageableDefault(page = 0, size = 10, sort = "data", direction = Sort.Direction.DESC) Pageable paginacao) {
 
@@ -52,11 +40,6 @@ public class CompraController {
     }
 
     // --- RetornarUm ---------------------------------------------------------
-    @Operation(summary = "Retorna uma compra", responses = {
-            @ApiResponse(responseCode = "200", description = "OK",content = @Content(mediaType = "application/json", schema = @Schema(implementation = CompraResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDefaultDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDefaultDTO.class)))
-    })
     @GetMapping("/{id}")
     public ResponseEntity<CompraResponse> retornarUm(@PathVariable UUID id) {
 
