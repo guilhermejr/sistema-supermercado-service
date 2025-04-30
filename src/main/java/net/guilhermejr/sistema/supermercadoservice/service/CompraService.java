@@ -8,7 +8,6 @@ import net.guilhermejr.sistema.supermercadoservice.api.response.CompraListagemRe
 import net.guilhermejr.sistema.supermercadoservice.api.response.CompraResponse;
 import net.guilhermejr.sistema.supermercadoservice.api.response.NFEResponse;
 import net.guilhermejr.sistema.supermercadoservice.client.NFEBAClient;
-import net.guilhermejr.sistema.supermercadoservice.config.security.AuthenticationCurrentUserService;
 import net.guilhermejr.sistema.supermercadoservice.domain.entity.*;
 import net.guilhermejr.sistema.supermercadoservice.domain.repository.*;
 import net.guilhermejr.sistema.supermercadoservice.exception.ExceptionDefault;
