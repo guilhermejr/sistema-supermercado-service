@@ -5,7 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import net.guilhermejr.sistema.supermercadoservice.api.mapper.NFEMapper;
 import net.guilhermejr.sistema.supermercadoservice.api.request.URLRequest;
 import net.guilhermejr.sistema.supermercadoservice.api.response.NFEListagemResponse;
-import net.guilhermejr.sistema.supermercadoservice.config.security.AuthenticationCurrentUserService;
+import net.guilhermejr.seguranca.jwt.AuthenticationCurrentUserService;
 import net.guilhermejr.sistema.supermercadoservice.domain.entity.NFE;
 import net.guilhermejr.sistema.supermercadoservice.domain.repository.NFERepository;
 import net.guilhermejr.sistema.supermercadoservice.exception.ExceptionDefault;
