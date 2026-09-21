@@ -39,6 +39,25 @@ PostgreSQL with Flyway, migrations in `src/main/resources/db/migration`.
 
 Own Vault keys: `NFEBAHost`, `tempoProcessamentoNFE`.
 
+### The NFE key's pipes are already encoded — do not "fix" this
+
+`CompraService` splits the QR Code URL and hands `NFEBAClient` a key full of pipes
+(`2923…59|2|1|1|BC31…0A`). The service on the other side runs on Tomcat, which
+answers **400** to a raw `|` in a path — so the pipes must travel as `%7C`.
+
+**Feign already does this**, and it is easy to waste time adding a redundant
+`.replace("|", "%7C")`. Verified against a socket that prints the raw request
+line, using the same `SpringMvcContract` and `@PathVariable` this client uses:
+
+| what is passed to `buscar()` | what goes on the wire |
+|---|---|
+| raw `\|` | `%7C` |
+| already `%7C` | `%7C` — not double-encoded |
+
+Both forms arrive identically, so an explicit replacement changes nothing. If a
+call to the NFE service fails, look elsewhere first: `NFEBAHost` missing the
+service's context path, or `split("=")[1]` on a URL that carries a second `=`.
+
 ## Actuator
 
 `/actuator/health` is public and returns the status only (`show-details: never`, set in the shared config repo). Everything else under `/actuator/**` requires HTTP Basic with `ROLE_ACTUATOR`, whose credentials come from Vault.
