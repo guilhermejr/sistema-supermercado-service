@@ -7,6 +7,7 @@ import net.guilhermejr.sistema.supermercadoservice.api.request.URLRequest;
 import net.guilhermejr.sistema.supermercadoservice.api.response.CompraListagemResponse;
 import net.guilhermejr.sistema.supermercadoservice.api.response.CompraResponse;
 import net.guilhermejr.sistema.supermercadoservice.api.response.NFEResponse;
+import net.guilhermejr.seguranca.jwt.AuthenticationCurrentUserService;
 import net.guilhermejr.sistema.supermercadoservice.client.NFEBAClient;
 import net.guilhermejr.sistema.supermercadoservice.domain.entity.*;
 import net.guilhermejr.sistema.supermercadoservice.domain.repository.*;
@@ -37,6 +38,7 @@ public class CompraService {
     private final ItemRepository itemRepository;
     private final ConverteStringUtil converteStringUtil;
     private final CompraMapper compraMapper;
+    private final AuthenticationCurrentUserService authenticationCurrentUserService;
 
     // --- Inserir ------------------------------------------------------------
     public NFEResponse inserir(URLRequest urlRequest, UUID usuario) {
@@ -139,7 +141,9 @@ public class CompraService {
     // --- Retornar -----------------------------------------------------------
     public Page<CompraListagemResponse> retornar(Pageable paginacao) {
 
-        Page<Compra> compras = compraRepository.findAll(paginacao);
+        UUID usuario = authenticationCurrentUserService.getCurrentUser().getId();
+
+        Page<Compra> compras = compraRepository.findAllByUsuario(usuario, paginacao);
         Page<CompraListagemResponse> pagina = compraMapper.mapPage(compras);
         preencherQuantidadeItens(pagina.getContent());
         return pagina;
@@ -168,7 +172,9 @@ public class CompraService {
     // --- RetornarUm ---------------------------------------------------------
     public CompraResponse retornarUm(UUID id) {
 
-        Compra compra = compraRepository.findById(id).orElseThrow(() -> {
+        UUID usuario = authenticationCurrentUserService.getCurrentUser().getId();
+
+        Compra compra = compraRepository.findByIdAndUsuario(id, usuario).orElseThrow(() -> {
             log.error("Compra: {} - Não encontrada", id);
             throw new ExceptionNotFound("Compra: "+ id +" - Não encontrada");
         });

@@ -40,6 +40,19 @@ newest first — via `@PageableDefault` on `CompraController`. `data` is the dat
 scraped from the SEFAZ page and stored **naive in local time**, unlike `criado`,
 which is UTC. A consumer that appends `Z` to `data` shifts it by three hours.
 
+Both `GET /compras` and `GET /compras/{id}` are **scoped to the authenticated
+user** — `findAllByUsuario` and `findByIdAndUsuario`, the same way `NFEService`
+works. A purchase belonging to someone else answers 404, not 403, so the
+endpoint does not reveal that the id exists. `CompraService.inserir` still takes
+`usuario` as a parameter instead of reading the security context, because the
+scheduled task calls it with no authenticated request.
+
+`V002` added `compras.usuario` as nullable with no backfill, so a purchase
+predating it would have no owner and would drop out of the listing the moment the
+filter landed — silently, with no error. Checked against production before
+shipping the filter: no row is orphaned, so nothing was hidden and no backfill
+was needed. Any new per-user filter over an old table deserves that check first.
+
 `CompraListagemResponse.quantidadeItens` is **not** mapped by ModelMapper from
 the entity: `Compra.items` is a lazy `@OneToMany`, and reading `.size()` per row
 would fire one query per purchase. `CompraService.retornar` instead maps the page
