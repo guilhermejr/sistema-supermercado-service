@@ -22,7 +22,6 @@ import java.util.UUID;
 @Log4j2
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
 @PreAuthorize("hasAnyRole('SUPERMERCADO')")
 @RequestMapping("/compras")
 public class CompraController {
