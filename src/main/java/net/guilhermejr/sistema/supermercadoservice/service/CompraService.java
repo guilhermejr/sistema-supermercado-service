@@ -19,7 +19,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -137,7 +140,28 @@ public class CompraService {
     public Page<CompraListagemResponse> retornar(Pageable paginacao) {
 
         Page<Compra> compras = compraRepository.findAll(paginacao);
-        return compraMapper.mapPage(compras);
+        Page<CompraListagemResponse> pagina = compraMapper.mapPage(compras);
+        preencherQuantidadeItens(pagina.getContent());
+        return pagina;
+
+    }
+
+    // --- PreencherQuantidadeItens -------------------------------------------
+    private void preencherQuantidadeItens(List<CompraListagemResponse> compras) {
+
+        if (compras.isEmpty()) {
+            return;
+        }
+
+        List<UUID> ids = compras.stream().map(CompraListagemResponse::getId).toList();
+
+        Map<UUID, Long> quantidades = itemRepository.contarPorCompras(ids)
+                .stream()
+                .collect(Collectors.toMap(QuantidadeItensPorCompra::getCompra,
+                        QuantidadeItensPorCompra::getQuantidade));
+
+        compras.forEach(compra ->
+                compra.setQuantidadeItens(quantidades.getOrDefault(compra.getId(), 0L).intValue()));
 
     }
 

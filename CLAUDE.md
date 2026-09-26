@@ -33,6 +33,19 @@ PostgreSQL with Flyway, migrations in `src/main/resources/db/migration`.
 
 `spring-boot-flyway` is declared in `pom.xml` and **must stay there**. In Spring Boot 4 the Flyway auto-configuration moved into that separate module; with only `flyway-core` on the classpath the service starts normally, logs nothing, and applies no migrations at all.
 
+## The listing endpoint carries a count the entity does not
+
+`GET /compras` is paginated and defaults to `sort=data,desc` — the emission date
+newest first — via `@PageableDefault` on `CompraController`. `data` is the date
+scraped from the SEFAZ page and stored **naive in local time**, unlike `criado`,
+which is UTC. A consumer that appends `Z` to `data` shifts it by three hours.
+
+`CompraListagemResponse.quantidadeItens` is **not** mapped by ModelMapper from
+the entity: `Compra.items` is a lazy `@OneToMany`, and reading `.size()` per row
+would fire one query per purchase. `CompraService.retornar` instead maps the page
+and then fills the counts from `ItemRepository.contarPorCompras`, a single
+grouped query over the page's ids — two queries per page, regardless of size.
+
 ## Integrations
 
 `nfe-ba-service` reads the invoice and `notificacao-service` sends notifications, both through OpenFeign. The Feign interfaces live in `client/` and carry `@PostMapping` annotations — they are **callers, not endpoints**. Do not mistake them for routes this service exposes.

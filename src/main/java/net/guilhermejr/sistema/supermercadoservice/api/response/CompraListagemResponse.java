@@ -17,6 +17,7 @@ public class CompraListagemResponse {
     private UUID id;
     private LocalDateTime data;
     private BigDecimal total;
+    private Integer quantidadeItens;
     private SupermercadoListagemResponse supermercado;
 
 }
