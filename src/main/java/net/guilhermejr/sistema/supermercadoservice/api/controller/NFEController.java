@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -37,6 +38,15 @@ public class NFEController {
         log.info("Retornando compras");
         List<NFEListagemResponse> nfeListagemResponses = NFEService.retornar();
         return ResponseEntity.status(HttpStatus.OK).body(nfeListagemResponses);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> apagar(@PathVariable UUID id) {
+
+        log.info("Apagando NFE: {}", id);
+        NFEService.apagar(id);
+        return ResponseEntity.noContent().build();
 
     }
 

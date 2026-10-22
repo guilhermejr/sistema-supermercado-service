@@ -9,6 +9,7 @@ import net.guilhermejr.seguranca.jwt.AuthenticationCurrentUserService;
 import net.guilhermejr.sistema.supermercadoservice.domain.entity.NFE;
 import net.guilhermejr.sistema.supermercadoservice.domain.repository.NFERepository;
 import net.guilhermejr.sistema.supermercadoservice.exception.ExceptionDefault;
+import net.guilhermejr.sistema.supermercadoservice.exception.ExceptionNotFound;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -54,6 +55,18 @@ public class NFEService {
 
         List<NFE> nfeList = nfeRepository.findAllByUsuarioOrderByCriadoAsc(usuario);
         return nfeMapper.mapList(nfeList);
+
+    }
+
+    // --- Apagar -------------------------------------------------------------
+    public void apagar(UUID id) {
+
+        UUID usuario = authenticationCurrentUserService.getCurrentUser().getId();
+
+        // --- NFE de outro usuário responde 404, sem revelar que o id existe ---
+        NFE nfe = nfeRepository.findByIdAndUsuario(id, usuario)
+                .orElseThrow(() -> new ExceptionNotFound("NFE: " + id + " - Não encontrada"));
+        nfeRepository.delete(nfe);
 
     }
 
