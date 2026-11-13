@@ -4,7 +4,7 @@ services:
     container_name: supermercado-service
     restart: always
     ports:
-      - "9005:9005"
+      - "127.0.0.1:9005:9005"
 
 networks:
   default:
